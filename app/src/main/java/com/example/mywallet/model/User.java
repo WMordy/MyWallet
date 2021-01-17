@@ -32,6 +32,6 @@ public class User {
     }
     public boolean isUserExist(){
         //TODO check if user valid
-        return false ;
+        return true ;
     }
 }

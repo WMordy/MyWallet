@@ -1,13 +1,20 @@
-package com.example.mywallet;
+package com.example.mywallet.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActionBar;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowInsets;
+import android.view.WindowInsetsController;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.mywallet.R;
 import com.example.mywallet.model.User;
 
 public class MainActivity extends AppCompatActivity {
@@ -17,9 +24,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        /*this.getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);   */
         setContentView(R.layout.activity_main);
         username = (EditText)findViewById(R.id.username);
         password = (EditText)findViewById(R.id.password);
+
+
 
     }
 
@@ -36,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
             User user = new User(usernameValue,passwordValue);
             if (user.isUserExist()){
                 Log.i("Login","you are logged in successfully");
+                Intent intent = new Intent(getBaseContext(), HomeActivity.class);
+                startActivity(intent);
             }
         }
 
