@@ -7,6 +7,10 @@ public class Account {
     ArrayList<Coordinate> coordinateArrayList ;
     public Account(String username){
         coordinateArrayList= new ArrayList<Coordinate>();
+        Coordinate crd = new Coordinate("Instagram","www.ig.com/wa.dii3");
+        Coordinate crd2 = new Coordinate("Instagram","www.ig.com/wa.dii4");
+        coordinateArrayList.add(crd);
+        coordinateArrayList.add(crd2);
         //TODO fetch user data
     }
     public boolean AddCoordinate(Coordinate crd){
@@ -20,6 +24,8 @@ public class Account {
         return true ;
     }
 
-
+    public ArrayList<Coordinate> getCoordinateArrayList() {
+        return coordinateArrayList;
+    }
 }
 

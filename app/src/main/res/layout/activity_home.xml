@@ -17,6 +17,7 @@
             android:orientation="vertical"
             android:paddingLeft="24dp"
             android:paddingTop="24dp"
+            android:id="@+id/parent_layout"
             android:paddingRight="24dp">
 
             <LinearLayout
@@ -119,29 +120,7 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:padding="24dp">
-
-                <ImageView
-                    android:id="@+id/imageView2"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/fb" />
-
-                <EditText
-                    android:id="@+id/editTextTextPersonName2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:gravity="center_horizontal"
-                    android:inputType="textPersonName"
-                    android:text="fb.com/wa.dii2" />
-            </LinearLayout>
+            <include layout="@layout/coordinate_item" />
         </LinearLayout>
     </ScrollView>
 
