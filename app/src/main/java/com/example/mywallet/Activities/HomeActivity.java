@@ -2,6 +2,7 @@ package com.example.mywallet.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -11,6 +12,9 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.mywallet.R;
+import com.example.mywallet.model.Account;
+import com.example.mywallet.model.Coordinate;
+import com.example.mywallet.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +23,14 @@ public class HomeActivity extends AppCompatActivity {
     EditText linkView ;
     List<String> spinnerArray =  new ArrayList<String>();
 
+    Account cnt ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent i = getIntent();
+        String username = i.getStringExtra("id");
 
-
+        cnt = new Account(username);
         setContentView(R.layout.activity_home);
         spinnerArray.add("Facebook");
         spinnerArray.add("Instagram");
@@ -43,6 +50,8 @@ public class HomeActivity extends AppCompatActivity {
         String selected = sItems.getSelectedItem().toString();
         if(inputcheck(linkValue,selected)){
             Toast.makeText(HomeActivity.this,selected + "   "+ linkValue,Toast.LENGTH_SHORT).show();
+            Coordinate  crd = new Coordinate(selected,linkValue);
+            cnt.AddCoordinate(crd);
             linkView.setText("");
 
         }

@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
             if (user.isUserExist()){
                 Log.i("Login","you are logged in successfully");
                 Intent intent = new Intent(getBaseContext(), HomeActivity.class);
+                intent.putExtra("username", usernameValue);
                 startActivity(intent);
             }
         }

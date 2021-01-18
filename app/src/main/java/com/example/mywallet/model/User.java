@@ -10,6 +10,9 @@ public class User {
         PASSWORD = password ;
 
     }
+    public User(String username){
+        this.USERNAME = username ;
+    }
 
     public String getUSERNAME() {
         return USERNAME;
