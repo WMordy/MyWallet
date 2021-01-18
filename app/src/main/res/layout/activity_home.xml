@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingLeft="24dp"
-            android:paddingTop="12dp"
+            android:paddingTop="24dp"
             android:paddingRight="24dp">
 
             <LinearLayout
@@ -77,7 +77,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#9C27B0"
+                    android:background="#CDDC39"
 
                     android:clipToPadding="false"
                     android:gravity="center_horizontal|fill_horizontal"
@@ -101,7 +101,7 @@
                         android:layout_weight="1" />
 
                     <EditText
-                        android:id="@+id/editTextTextPersonName"
+                        android:id="@+id/link_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
@@ -111,9 +111,10 @@
                         android:textColorHint="#FFFFFF" />
 
                     <Button
-                        android:id="@+id/button4"
+                        android:id="@+id/add_coord"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:onClick="addCoord"
                         android:text="Add" />
                 </LinearLayout>
             </LinearLayout>
@@ -121,7 +122,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="24dp">
 
                 <ImageView
                     android:id="@+id/imageView2"
