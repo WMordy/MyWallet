@@ -31,9 +31,9 @@ import static android.widget.LinearLayout.HORIZONTAL;
 
 public class HomeActivity extends AppCompatActivity {
     EditText linkView ;
-    List<String> spinnerArray =  new ArrayList<String>();
+    final List<String> spinnerArray =  new ArrayList<String>();
 
-    Account cnt ;
+    static Account cnt ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +41,7 @@ public class HomeActivity extends AppCompatActivity {
         String username = i.getStringExtra("id");
         cnt = new Account(username);
         setContentView(R.layout.activity_home);
-        renderCoordinates();
+        renderCoordinates(cnt.getCoordinateArrayList());
         spinnerArray.add("Facebook");
         spinnerArray.add("Instagram");
         spinnerArray.add("LinkedIn");
@@ -63,6 +63,8 @@ public class HomeActivity extends AppCompatActivity {
             Coordinate  crd = new Coordinate(selected,linkValue);
             cnt.AddCoordinate(crd);
             linkView.setText("");
+            finish();
+            startActivity(getIntent());
 
         }
 
@@ -74,32 +76,11 @@ public class HomeActivity extends AppCompatActivity {
         return true ;
     }
 
-    public  void renderCoordinates(  ){
+    public  void renderCoordinates(ArrayList<Coordinate> coordinatesArray ){
         int i = 0;
-        for(Coordinate cn :cnt.getCoordinateArrayList()){
+        for(Coordinate cn :coordinatesArray){
             i++;
-        /* ImageView logo = new ImageView(this);
-         EditText text = new EditText(this);
-         LinearLayout layout = new LinearLayout(this);
-         layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
-         layout.setId(cn.getID());
-         layout.setOrientation(HORIZONTAL);
-         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                 LinearLayout.LayoutParams.WRAP_CONTENT,
-                 LinearLayout.LayoutParams.WRAP_CONTENT);
-         text.setLayoutParams(params);
-         text.setText(cn.getValue());
-            int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48, getResources().getDisplayMetrics());
-            int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48, getResources().getDisplayMetrics());
-            logo.setLayoutParams(new LinearLayout.LayoutParams(height,width));
 
-         logo.setImageResource(R.drawable.fb);
-         text.setForegroundGravity(TEXT_ALIGNMENT_CENTER);
-         layout.addView(logo);
-         layout.addView(text);
-         LinearLayout parent = (LinearLayout)findViewById(R.id.parent_layout);
-            View to_add = inflater.inflate(layout, false);
-         parent.addView(layout);*/
             final LinearLayout linearLayoutForm = (LinearLayout) findViewById(R.id.parent_layout);
             final LinearLayout newView = (LinearLayout) getLayoutInflater().inflate(R.layout.coordinate_item, null);
             final EditText edit_new = (EditText) newView.findViewById(R.id.editTextTextPersonName2);

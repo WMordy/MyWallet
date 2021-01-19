@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Account {
     User user ;
-    ArrayList<Coordinate> coordinateArrayList ;
+    static ArrayList<Coordinate> coordinateArrayList ;
     public Account(String username){
         coordinateArrayList= new ArrayList<Coordinate>();
         Coordinate crd = new Coordinate("Instagram","www.ig.com/wa.dii3");
