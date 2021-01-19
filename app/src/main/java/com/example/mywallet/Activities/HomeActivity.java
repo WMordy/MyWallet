@@ -6,7 +6,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +25,10 @@ import com.example.mywallet.R;
 import com.example.mywallet.model.Account;
 import com.example.mywallet.model.Coordinate;
 import com.example.mywallet.model.User;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.ByteMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +58,29 @@ public class HomeActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         Spinner sItems = (Spinner) findViewById(R.id.spinner);
         sItems.setAdapter(adapter);
+
+
+        QRCodeWriter writer = new QRCodeWriter();
+        ImageView tnsd_iv_qr = (ImageView)findViewById(R.id.imageView);
+        try {
+            ByteMatrix bitMatrix = writer.encode("Sammu", BarcodeFormat.QR_CODE, 512, 512);
+            int width = 512;
+            int height = 512;
+            Bitmap bmp = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    if (bitMatrix.get(x, y)==0)
+                        bmp.setPixel(x, y, Color.BLACK);
+                    else
+                        bmp.setPixel(x, y, Color.WHITE);
+                }
+            }
+            tnsd_iv_qr.setImageBitmap(bmp);
+        } catch (WriterException e) {
+            Log.e("QR ERROR", ""+e);
+
+        }
+
     }
 
     public void addCoord(View v){
