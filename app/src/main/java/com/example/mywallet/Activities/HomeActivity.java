@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.example.mywallet.R;
 import com.example.mywallet.model.Account;
 import com.example.mywallet.model.Coordinate;
+import com.example.mywallet.model.QRcoder;
 import com.example.mywallet.model.User;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
@@ -60,26 +61,16 @@ public class HomeActivity extends AppCompatActivity {
         sItems.setAdapter(adapter);
 
 
-        QRCodeWriter writer = new QRCodeWriter();
         ImageView tnsd_iv_qr = (ImageView)findViewById(R.id.imageView);
+        Bitmap bmp = null;
         try {
-            ByteMatrix bitMatrix = writer.encode("Sammu", BarcodeFormat.QR_CODE, 512, 512);
-            int width = 512;
-            int height = 512;
-            Bitmap bmp = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
-            for (int x = 0; x < width; x++) {
-                for (int y = 0; y < height; y++) {
-                    if (bitMatrix.get(x, y)==0)
-                        bmp.setPixel(x, y, Color.BLACK);
-                    else
-                        bmp.setPixel(x, y, Color.WHITE);
-                }
-            }
-            tnsd_iv_qr.setImageBitmap(bmp);
+            bmp = QRcoder.setQRcode("test");
         } catch (WriterException e) {
-            Log.e("QR ERROR", ""+e);
-
+            e.printStackTrace();
         }
+        tnsd_iv_qr.setImageBitmap(bmp);
+
+
 
     }
 
@@ -93,6 +84,9 @@ public class HomeActivity extends AppCompatActivity {
             Coordinate  crd = new Coordinate(selected,linkValue);
             cnt.AddCoordinate(crd);
             linkView.setText("");
+            for(Coordinate k : cnt.getCoordinateArrayList()){
+                Log.i("coordinates list",k.getValue());
+            }
             finish();
             startActivity(getIntent());
 
