@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mywallet.R;
@@ -39,6 +40,7 @@ import static android.widget.LinearLayout.HORIZONTAL;
 
 public class HomeActivity extends AppCompatActivity {
     EditText linkView ;
+    TextView label ;
     final List<String> spinnerArray =  new ArrayList<String>();
 
     static Account cnt ;
@@ -46,9 +48,11 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent i = getIntent();
-        String username = i.getStringExtra("id");
+        String username = i.getStringExtra("username");
         cnt = new Account(username);
         setContentView(R.layout.activity_home);
+        label = (TextView)findViewById(R.id.hello_label);
+        label.setText("Hello ,"+username);
         renderCoordinates(cnt.getCoordinateArrayList());
         spinnerArray.add("Facebook");
         spinnerArray.add("Instagram");

@@ -37,7 +37,11 @@ public class User {
 
 
 
-    public boolean Login(){
+    public boolean Login()   {
+        boolean login = usrDao.LoginDAO(this.USERNAME,this.PASSWORD);
+        return login ;
+    }
+    public boolean CreateUser()   {
         boolean login = usrDao.LoginDAO(this.USERNAME,this.PASSWORD);
         return login ;
     }

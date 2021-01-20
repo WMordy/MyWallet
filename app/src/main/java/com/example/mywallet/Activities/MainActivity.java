@@ -63,12 +63,24 @@ public class MainActivity extends AppCompatActivity {
         }
         else{
             User user = new User(usernameValue,passwordValue);
-            if(user.isUserExist()){
+            if(!user.isUserExist()){   // THIS IS JUST FOR TEST CHANGE IT !!!!!!
+                Toast.makeText(MainActivity.this,"username :" +user.getUSERNAME() + "already used",Toast.LENGTH_SHORT).show();
+                clearCredintials();
                 Log.i("SignUP","you are logged in successfully");
             }
             else{
-                Toast.makeText(MainActivity.this,"username :" +user.getUSERNAME() + "already used",Toast.LENGTH_SHORT).show();
-                clearCredintials();
+              try{
+                  user.CreateUser();
+                  user.Login();
+                  Log.i("Login","you are logged in successfully");
+                  Intent intent = new Intent(getBaseContext(), HomeActivity.class);
+                  intent.putExtra("username", usernameValue);
+                  startActivity(intent);
+
+              }
+              catch (Exception e){
+                  e.printStackTrace();
+              }
             }
         }
 
