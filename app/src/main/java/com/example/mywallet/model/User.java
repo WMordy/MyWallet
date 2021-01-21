@@ -1,14 +1,16 @@
 package com.example.mywallet.model;
 
+import android.content.Context;
+
 import com.example.mywallet.data.UserDAO;
 
 public class User {
 
     private String USERNAME ;
     private String PASSWORD ;
-    private UserDAO usrDao = new UserDAO();
-    public User(String username, String password){
-
+    private UserDAO usrDao = null;
+    public User(String username, String password, Context cnt){
+        usrDao = new UserDAO(cnt);
         USERNAME = username;
         PASSWORD = password ;
 

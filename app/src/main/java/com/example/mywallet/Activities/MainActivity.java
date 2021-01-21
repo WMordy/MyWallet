@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
             clearCredintials();
         }
         else{
-            User user = new User(usernameValue,passwordValue);
+            User user = new User(usernameValue,passwordValue,this);
             if (user.Login()){
                 Log.i("Login","you are logged in successfully");
                 Intent intent = new Intent(getBaseContext(), HomeActivity.class);
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             clearCredintials();
         }
         else{
-            User user = new User(usernameValue,passwordValue);
+            User user = new User(usernameValue,passwordValue,this);
             if(!user.isUserExist()){   // THIS IS JUST FOR TEST CHANGE IT !!!!!!
                 Toast.makeText(MainActivity.this,"username :" +user.getUSERNAME() + "already used",Toast.LENGTH_SHORT).show();
                 clearCredintials();
