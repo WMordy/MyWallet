@@ -10,12 +10,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class APICall {
     RequestQueue requestQueue ;
@@ -31,22 +30,15 @@ public class APICall {
         return apiCall ;
     }
 
-    public void volleyGet(){
-        String url = "http://10.0.2.2:2699/userCoordinations/sammu";
-        List<String> jsonResponses = new ArrayList<>();
-
+    public boolean CheckUser(String user){
+        String url = "http://10.0.2.2:2699/checkUser/"+user;
+        AtomicBoolean value = new AtomicBoolean(false);
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, response -> {
             try {
-                String value = response.getString("ig");
-                Log.i("FETCH DATA",value);
-                //JSONArray jsonArray = response.getJSONArray("data");
-               /* for(int i = 0; i < jsonArray.length(); i++){
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    String email = jsonObject.getString("email");
+                 value.set(response.getBoolean("status"));
 
-                    jsonResponses.add(email);
-                }*/
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -58,6 +50,43 @@ public class APICall {
         });
 
         requestQueue.add(jsonObjectRequest);
+        return value.get();
+
+    }
+    public ArrayList<String[]> GetCoordinates(String user){
+        String url = "http://10.0.2.2:2699/userCoordinations/" +user;
+        ArrayList<String[]> jsonResponses = new ArrayList<>();
+
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, response -> {
+            Iterator<String> iter = response.keys();
+            while (iter.hasNext()) {
+                String key = iter.next();
+                try {
+                    String value = response.getString(key);
+                    String[] coordinate = {key,value};
+                    jsonResponses.add(coordinate);
+                } catch (JSONException e) {
+                    // Something went wrong!
+                }
+            }
+            Log.i("FETCH",jsonResponses.toString());
+            //JSONArray jsonArray = response.getJSONArray("data");
+               /* for(int i = 0; i < jsonArray.length(); i++){
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    String email = jsonObject.getString("email");
+
+                    jsonResponses.add(email);
+                }*/
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        requestQueue.add(jsonObjectRequest);
+        return jsonResponses ;
 
     }
 }

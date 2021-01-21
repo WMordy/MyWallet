@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else{
             User user = new User(usernameValue,passwordValue,this);
-            if(!user.isUserExist()){   // THIS IS JUST FOR TEST CHANGE IT !!!!!!
+            if(user.isUserExist()){   // THIS IS JUST FOR TEST CHANGE IT !!!!!!
                 Toast.makeText(MainActivity.this,"username :" +user.getUSERNAME() + "already used",Toast.LENGTH_SHORT).show();
                 clearCredintials();
                 Log.i("SignUP","you are logged in successfully");

@@ -32,7 +32,9 @@ app.get("/userCoordinations/:username",(req,res)=>{
 app.get("/checkUser/:user",(req,res)=>{
     let username = req.params.user
     console.log(username)
-    res.sendStatus(200)
+    let status = {
+    'status': true}
+    res.json(status)
 })
 
 app.listen(2699);

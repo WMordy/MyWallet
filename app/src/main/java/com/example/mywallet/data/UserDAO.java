@@ -11,12 +11,13 @@ public class UserDAO {
      }
     public boolean UsernameValid(String username){
         //TODO add request here to get validity
+        apiCall.CheckUser(username);
         return true ;
     }
     public  boolean LoginDAO(String username,String password) {
          try{
              String HashedPassword = crpt.encrypt(password);
-             apiCall.volleyGet();
+             apiCall.GetCoordinates(username);
              return true ;
          }
          catch(Exception e){
