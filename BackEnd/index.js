@@ -13,7 +13,9 @@ app.post("/auth",(req,res)=>{
     let hashedPass = req.body.hashedPass
     console.log(username+"    "+hashedPass);
     console.log(req.body)
-    res.sendStatus(200)
+    let status = {
+        'status': false }
+        res.json(status)
     //TODO setup authentification here
 
 })

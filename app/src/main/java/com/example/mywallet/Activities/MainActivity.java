@@ -43,15 +43,15 @@ public class MainActivity extends AppCompatActivity {
         }
         else{
             User user = new User(usernameValue,passwordValue,this);
-            if (user.Login()){
-                Log.i("Login","you are logged in successfully");
-                Intent intent = new Intent(getBaseContext(), HomeActivity.class);
-                intent.putExtra("username", usernameValue);
-                startActivity(intent);
+            clearCredintials();
+            user.Login();
+            Log.i("Login","you are logged in successfully");
+
             }
+
         }
 
-    }
+
     public void SignUp(View v){
         Log.i("SignUP","im signing up");
         Toast.makeText(MainActivity.this,"Hello "+password.getText(),Toast.LENGTH_SHORT).show();

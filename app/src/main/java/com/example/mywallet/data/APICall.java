@@ -1,7 +1,9 @@
 package com.example.mywallet.data;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -9,18 +11,30 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.mywallet.Activities.HomeActivity;
+import com.example.mywallet.Activities.MainActivity;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class APICall {
+    private static String URL_PREFIX = "http://10.0.2.2:2699";
     RequestQueue requestQueue ;
     private static APICall  apiCall = null;
+    private  static boolean loginState = false ;
+    private  Context cnt ;
+
+
+
+
     APICall(Context context){
+        cnt= context.getApplicationContext() ;
          requestQueue =  Volley.newRequestQueue(context.getApplicationContext());
+
     }
 
     public static synchronized APICall getInstance(Context cont){
@@ -31,12 +45,13 @@ public class APICall {
     }
 
     public boolean CheckUser(String user){
-        String url = "http://10.0.2.2:2699/checkUser/"+user;
+        String url = URL_PREFIX+"/checkUser/"+user;
         AtomicBoolean value = new AtomicBoolean(false);
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, response -> {
             try {
-                 value.set(response.getBoolean("status"));
+                System.out.println(response);
+                 value.set(response.getString("status").equals("true"));
 
 
             } catch (JSONException e) {
@@ -54,7 +69,7 @@ public class APICall {
 
     }
     public ArrayList<String[]> GetCoordinates(String user){
-        String url = "http://10.0.2.2:2699/userCoordinations/" +user;
+        String url = URL_PREFIX + "/userCoordinations/" + user;
         ArrayList<String[]> jsonResponses = new ArrayList<>();
 
 
@@ -88,5 +103,55 @@ public class APICall {
         requestQueue.add(jsonObjectRequest);
         return jsonResponses ;
 
+    }
+    public  boolean ApiLogin(String username , String hashedpass){
+        String postUrl = URL_PREFIX + "/auth";
+         boolean[] value = {false};
+        JSONObject postData = new JSONObject();
+        try {
+            postData.put("username", username);
+            postData.put("hashedPass", hashedpass);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, postUrl, postData, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                boolean loginValue = false;
+                try {
+                    loginValue = response.getBoolean("status");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if(loginValue){
+                   System.out.println(response);
+                   Intent intent = new Intent(cnt.getApplicationContext(), HomeActivity.class);
+                   intent.putExtra("username", username);
+                   intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                   cnt.startActivity(intent);
+               }
+                else{
+                    Toast.makeText(cnt,"wrong username or password",Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+
+        requestQueue.add(jsonObjectRequest);
+        return value[0];
+
+    }
+
+    public   void setLoginState(boolean loginState) {
+        APICall.loginState = loginState;
     }
 }
