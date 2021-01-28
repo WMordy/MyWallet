@@ -16,6 +16,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.mywallet.Activities.HomeActivity;
 import com.example.mywallet.model.Coordinate;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -79,9 +80,49 @@ public class APICall {
     }
     public MutableLiveData<ArrayList<String[]>> GetCoordinates(String user){
         String url = URL_PREFIX + "/userCoordinations/" + user;
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                JSONArray result ;
+                ArrayList jsonResponses = new ArrayList<>();
+
+                try {
+                    result = response.getJSONArray("data");
+                    for(int i = 0; i < result.length(); i++){
+                        JSONArray jsonArray = result.getJSONArray(i);
+                        String value = jsonArray.getString(1);
+                        String key = jsonArray.getString(0);
+                        String[] coordinate = {key,value};
+                        jsonResponses.add(coordinate);
 
 
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
+                fetchCoordinates(jsonResponses);
+                Log.i("FETCH",jsonResponses.toString());
+                //JSONArray jsonArray = response.getJSONArray("data");
+               /* for(int i = 0; i < jsonArray.length(); i++){
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    String email = jsonObject.getString("email");
+
+                    jsonResponses.add(email);
+                }*/
+            }}, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        requestQueue.add(jsonObjectRequest);
+        return coordinates ;
+
+    }
+  /*  public MutableLiveData<ArrayList<String[]>> GetCoordinates(String user){
+        String url = URL_PREFIX + "/userCoordinations/" + user;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -100,12 +141,12 @@ public class APICall {
             fetchCoordinates(jsonResponses);
             Log.i("FETCH",jsonResponses.toString());
             //JSONArray jsonArray = response.getJSONArray("data");
-               /* for(int i = 0; i < jsonArray.length(); i++){
+               *//* for(int i = 0; i < jsonArray.length(); i++){
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     String email = jsonObject.getString("email");
 
                     jsonResponses.add(email);
-                }*/
+                }*//*
         }}, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
@@ -116,7 +157,7 @@ public class APICall {
         requestQueue.add(jsonObjectRequest);
         return coordinates ;
 
-    }
+    }*/
     public  boolean ApiLogin(String username , String hashedpass){
         String postUrl = URL_PREFIX + "/auth";
          boolean[] value = {false};

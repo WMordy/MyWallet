@@ -43,8 +43,7 @@ app.get("/userCoordinations/:username",(req,res)=>{
     console.log("sending coordinations")
     //TODO setup users infos here 
     let Coordinates = {
-        "ig" : "www.server.com",
-        "facebook" : "fb.com/server"
+       "data" : CoordinatesArray
     }
     res.json(Coordinates)
 })
