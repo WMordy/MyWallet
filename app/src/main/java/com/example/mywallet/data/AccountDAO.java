@@ -16,7 +16,4 @@ public class AccountDAO {
         return Coordinates ;
     }
 
-    public boolean addCoordinate(String type ,String value){
-        return true ;
-    }
 }

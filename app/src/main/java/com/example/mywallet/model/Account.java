@@ -25,15 +25,7 @@ public class Account {
 
 
     }
-    public boolean AddCoordinate(Coordinate crd){
-        if (accountDAO.addCoordinate(crd.getType(),crd.getValue())){
-            ArrayList<Coordinate> result = new ArrayList<>();
-            result.add(crd);
-            coordinateArrayList.setValue(result);
-        }
 
-        return true ;
-    }
   /*  public boolean DeleteCoordinate(int index ){
         coordinateArrayList.remove(index);
         //TODO push update to database

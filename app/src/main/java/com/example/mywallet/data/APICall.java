@@ -14,6 +14,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.mywallet.Activities.HomeActivity;
+import com.example.mywallet.model.Coordinate;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -143,6 +145,51 @@ public class APICall {
                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                    cnt.startActivity(intent);
                }
+                else{
+                    Toast.makeText(cnt,"wrong username or password",Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+
+        requestQueue.add(jsonObjectRequest);
+        return value[0];
+
+    }
+
+    public  boolean PostCoordinate(String username , Coordinate crd){
+        String postUrl = URL_PREFIX + "/addCoordination";
+        boolean[] value = {false};
+        JSONObject postData = new JSONObject();
+        try {
+            postData.put("username", username);
+            postData.put("type", crd.getType());
+            postData.put("value", crd.getValue());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, postUrl, postData, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                boolean isSent = false;
+                try {
+                    isSent = response.getBoolean("status");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if(isSent){
+                    System.out.println("Sent");
+
+                }
                 else{
                     Toast.makeText(cnt,"wrong username or password",Toast.LENGTH_SHORT).show();
 

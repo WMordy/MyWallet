@@ -1,7 +1,9 @@
 var express = require("express")
 var app  = express()
 
-
+var CoordinatesArray = [
+                               ["ig" , "www.server.com"],
+                               ["facebook" ,"fb.com/server"]]
 app.use(express.json()); 
 
 app.get("/", (req,res)=>(
@@ -19,6 +21,22 @@ app.post("/auth",(req,res)=>{
     //TODO setup authentification here
 
 })
+
+
+app.post("/addCoordination",(req,res)=>{
+    let username = req.body.username
+    let type  = req.body.type 
+    let value = req.body.value
+    CoordinatesArray.push([type,value])
+    console.log(CoordinatesArray);
+    console.log(req.body)
+    let status = {
+        'status': true }
+        res.json(status)
+    //TODO setup authentification here
+
+})
+
 
 app.get("/userCoordinations/:username",(req,res)=>{
     let username = req.params.username

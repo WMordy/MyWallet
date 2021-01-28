@@ -94,11 +94,10 @@ public class HomeActivity extends AppCompatActivity {
         if(inputcheck(linkValue,selected)){
             Toast.makeText(HomeActivity.this,selected + "   "+ linkValue,Toast.LENGTH_SHORT).show();
             Coordinate  crd = new Coordinate(selected,linkValue);
-            cnt.AddCoordinate(crd);
+            APICall apiCall = new APICall(this);
+            apiCall.PostCoordinate(cnt.getUsername(),crd);
             linkView.setText("");
-            for(Coordinate k : cnt.getCoordinateArrayList(cnt.getUsername(),this).getValue()){
-                Log.i("coordinates list",k.getValue());
-            }
+
             finish();
             startActivity(getIntent());
 
