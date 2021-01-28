@@ -3,6 +3,9 @@ package com.example.mywallet.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import android.content.Intent;
@@ -23,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mywallet.R;
+import com.example.mywallet.data.APICall;
 import com.example.mywallet.model.Account;
 import com.example.mywallet.model.Coordinate;
 import com.example.mywallet.model.QRcoder;
@@ -49,11 +53,10 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Intent i = getIntent();
         String username = i.getStringExtra("username");
-        cnt = new Account(username);
+        cnt = new Account(username,this);
         setContentView(R.layout.activity_home);
         label = (TextView)findViewById(R.id.hello_label);
         label.setText("Hello ,"+username);
-        renderCoordinates(cnt.getCoordinateArrayList());
         spinnerArray.add("Facebook");
         spinnerArray.add("Instagram");
         spinnerArray.add("LinkedIn");
@@ -63,7 +66,12 @@ public class HomeActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         Spinner sItems = (Spinner) findViewById(R.id.spinner);
         sItems.setAdapter(adapter);
+        APICall apiCall = new APICall(this);
+        apiCall.GetCoordinates(username).observe(this,array ->{
+            renderCoordinates(fixCooor(array));
 
+        });
+        //cnt.getCoordinateArrayList(username,this).observe(this, this::renderCoordinates);
 
         ImageView tnsd_iv_qr = (ImageView)findViewById(R.id.imageView);
         Bitmap bmp = null;
@@ -88,7 +96,7 @@ public class HomeActivity extends AppCompatActivity {
             Coordinate  crd = new Coordinate(selected,linkValue);
             cnt.AddCoordinate(crd);
             linkView.setText("");
-            for(Coordinate k : cnt.getCoordinateArrayList()){
+            for(Coordinate k : cnt.getCoordinateArrayList(cnt.getUsername(),this).getValue()){
                 Log.i("coordinates list",k.getValue());
             }
             finish();
@@ -102,6 +110,14 @@ public class HomeActivity extends AppCompatActivity {
             return false ;
         }
         return true ;
+    }
+    public ArrayList<Coordinate> fixCooor(ArrayList<String []> arr){
+        ArrayList<Coordinate> result = new ArrayList<>();
+        for (String[] coord:arr) {
+            Coordinate crdDynamic = new Coordinate(coord[0],coord[1]);
+            result.add(crdDynamic);
+        }
+        return result ;
     }
 
     public  void renderCoordinates(ArrayList<Coordinate> coordinatesArray ){

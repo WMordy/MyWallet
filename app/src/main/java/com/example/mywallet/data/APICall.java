@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -12,8 +14,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.mywallet.Activities.HomeActivity;
-import com.example.mywallet.Activities.MainActivity;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -26,14 +26,16 @@ public class APICall {
     RequestQueue requestQueue ;
     private static APICall  apiCall = null;
     private  static boolean loginState = false ;
+    public  static MutableLiveData<ArrayList<String []>> coordinates  ;
     private  Context cnt ;
 
 
 
 
-    APICall(Context context){
+    public APICall(Context context){
         cnt= context.getApplicationContext() ;
          requestQueue =  Volley.newRequestQueue(context.getApplicationContext());
+         coordinates = new MutableLiveData<>();
 
     }
 
@@ -68,12 +70,20 @@ public class APICall {
         return value.get();
 
     }
-    public ArrayList<String[]> GetCoordinates(String user){
+
+    public void fetchCoordinates(ArrayList<String []> array ){
+        coordinates .setValue(array); ;
+        return  ;
+    }
+    public MutableLiveData<ArrayList<String[]>> GetCoordinates(String user){
         String url = URL_PREFIX + "/userCoordinations/" + user;
-        ArrayList<String[]> jsonResponses = new ArrayList<>();
 
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, response -> {
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                ArrayList<String[]> jsonResponses = new ArrayList<>();
             Iterator<String> iter = response.keys();
             while (iter.hasNext()) {
                 String key = iter.next();
@@ -85,6 +95,7 @@ public class APICall {
                     // Something went wrong!
                 }
             }
+            fetchCoordinates(jsonResponses);
             Log.i("FETCH",jsonResponses.toString());
             //JSONArray jsonArray = response.getJSONArray("data");
                /* for(int i = 0; i < jsonArray.length(); i++){
@@ -93,7 +104,7 @@ public class APICall {
 
                     jsonResponses.add(email);
                 }*/
-        }, new Response.ErrorListener() {
+        }}, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
@@ -101,7 +112,7 @@ public class APICall {
         });
 
         requestQueue.add(jsonObjectRequest);
-        return jsonResponses ;
+        return coordinates ;
 
     }
     public  boolean ApiLogin(String username , String hashedpass){

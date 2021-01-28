@@ -14,7 +14,7 @@ app.post("/auth",(req,res)=>{
     console.log(username+"    "+hashedPass);
     console.log(req.body)
     let status = {
-        'status': false }
+        'status': true }
         res.json(status)
     //TODO setup authentification here
 
@@ -22,7 +22,7 @@ app.post("/auth",(req,res)=>{
 
 app.get("/userCoordinations/:username",(req,res)=>{
     let username = req.params.username
-    console.log(username)
+    console.log("sending coordinations")
     //TODO setup users infos here 
     let Coordinates = {
         "ig" : "www.server.com",
