@@ -4,6 +4,9 @@ var app  = express()
 var CoordinatesArray = [
                                ["ig" , "www.server.com"],
                                ["facebook" ,"fb.com/server"]]
+var UsersArray = [
+                               ["test" , "4Bjx5WkqDQFVwdc1lUA4Yw==\n"],
+                               ["sammu" ,"/puJxSckU46acuBrVHYWKw==\n"]]
 app.use(express.json()); 
 
 app.get("/", (req,res)=>(
@@ -14,9 +17,9 @@ app.post("/auth",(req,res)=>{
     let username  = req.body.username 
     let hashedPass = req.body.hashedPass
     console.log(username+"    "+hashedPass);
-    console.log(req.body)
+    
     let status = {
-        'status': true }
+        'status': UsersArray[0][0] == username  }
         res.json(status)
     //TODO setup authentification here
 
