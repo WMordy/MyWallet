@@ -2,8 +2,8 @@ var express = require("express")
 var app  = express()
 
 var CoordinatesArray = [
-                               ["ig" , "www.server.com"],
-                               ["facebook" ,"fb.com/server"]]
+                               ["Instagram" , "www.server.com"],
+                               ["Facebook" ,"fb.com/server"]]
 var UsersArray = [
                                ["test" , "4Bjx5WkqDQFVwdc1lUA4Yw==\n"],
                                ["sammu" ,"/puJxSckU46acuBrVHYWKw==\n"]]

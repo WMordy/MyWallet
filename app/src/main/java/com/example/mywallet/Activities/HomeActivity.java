@@ -128,6 +128,16 @@ public class HomeActivity extends AppCompatActivity {
             final LinearLayout newView = (LinearLayout) getLayoutInflater().inflate(R.layout.coordinate_item, null);
             final EditText edit_new = (EditText) newView.findViewById(R.id.editTextTextPersonName2);
             edit_new.setId(i);
+            final ImageView img = (ImageView) newView.findViewById(R.id.imageView2);
+            if(cn.getType().equals("Facebook")){
+                img.setImageDrawable(getDrawable(R.drawable.facebook));
+            }
+            if(cn.getType().equals("Instagram")){
+                img.setImageDrawable(getDrawable(R.drawable.instagram));
+            }
+            if(cn.getType().equals("LinkedIn")){
+                img.setImageDrawable(getDrawable(R.drawable.linkedin));
+            }
             edit_new.setText(cn.getValue());
             linearLayoutForm.addView(newView);
 
