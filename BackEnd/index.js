@@ -60,15 +60,22 @@ app.post("/addCoordination",(req,res)=>{
 })
 
 
-app.get("/userCoordinations/:username",(req,res)=>{
+app.get("/userCoordinations/:username", async  (req,res)=>{
+    mongoose.connect('mongodb://localhost/MyWallet');
     let username = req.params.username
     console.log("sending coordinations")
     //TODO setup users infos here 
-    Coordinate.find({username : username},(err,response) => {
-        console.log(response)
-    })
+    newCoordinatesArray = []
+     var cursor =   await Coordinate.find();
+     
+     cursor.forEach(x => {
+        
+        newCoordinatesArray.push([x.type,x.value])
+    
+});
+console.log(newCoordinatesArray)
     let Coordinates = {
-       "data" : CoordinatesArray
+       "data" : newCoordinatesArray
     }
     res.json(Coordinates)
 })
