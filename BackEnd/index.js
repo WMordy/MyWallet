@@ -22,15 +22,24 @@ var CoordinateSchema = mongoose.Schema({
     value : String 
 })
 var Coordinate = mongoose.model("Coordinate",CoordinateSchema)
+var UserSchema = mongoose.Schema({
+    username : String,
+    hashedPass : String
+})
+
+var User = mongoose.model("User",UserSchema)
 
 
-app.post("/auth",(req,res)=>{
+app.post("/auth",async (req,res)=>{
     let username  = req.body.username 
     let hashedPass = req.body.hashedPass
     console.log(username+"    "+hashedPass);
-    
+    let Resultstatus = false 
+    mongoose.connect('mongodb://localhost/MyWallet');
+    let cursor =await User.find({username:username,hashedPass : hashedPass});
+    console.log(cursor.length)
     let status = {
-        'status': UsersArray[0][0] == username  }
+        'status':  cursor.length == 1 }
         res.json(status)
     //TODO setup authentification here
 
@@ -60,13 +69,40 @@ app.post("/addCoordination",(req,res)=>{
 })
 
 
+app.post("/createAccount",async (req,res)=>{
+    let username  = req.body.username 
+    let hashedPass = req.body.hashedPass
+    mongoose.connect('mongodb://localhost/MyWallet');
+    let cursor =await User.find({username:username});
+    console.log(cursor.length)
+    let status = false 
+    if(cursor.length == 0){
+        let newUser = new User({
+            username : username,
+            hashedPass : hashedPass
+        })
+        newUser.save();
+        
+        UsersArray.push([username,hashedPass])
+        console.log(UsersArray);
+        status = true ;
+    }
+   
+    
+    let Resultstatus = {
+        'status': status }
+        res.json(Resultstatus)
+    //TODO setup authentification here
+
+})
+
 app.get("/userCoordinations/:username", async  (req,res)=>{
     mongoose.connect('mongodb://localhost/MyWallet');
     let username = req.params.username
     console.log("sending coordinations")
     //TODO setup users infos here 
     newCoordinatesArray = []
-     var cursor =   await Coordinate.find();
+     let cursor =   await Coordinate.find({username : username});
      
      cursor.forEach(x => {
         

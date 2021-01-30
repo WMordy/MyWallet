@@ -21,7 +21,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class APICall {
@@ -49,7 +48,7 @@ public class APICall {
         return apiCall ;
     }
 
-    public boolean CheckUser(String user){
+    public boolean CheckUser(String user){     //To Remove!!!!!!
         String url = URL_PREFIX+"/checkUser/"+user;
         AtomicBoolean value = new AtomicBoolean(false);
 
@@ -202,6 +201,52 @@ public class APICall {
 
         requestQueue.add(jsonObjectRequest);
         return value[0];
+
+    }
+    public void CreateAccount(String username , String hashedpass){
+        String postUrl = URL_PREFIX + "/createAccount";
+        boolean[] value = {false};
+        JSONObject postData = new JSONObject();
+        try {
+            postData.put("username", username);
+            postData.put("hashedPass", hashedpass);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, postUrl, postData, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                boolean loginValue = false;
+                try {
+                    loginValue = response.getBoolean("status");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if(loginValue){
+                    System.out.println(response);
+                    Intent intent = new Intent(cnt.getApplicationContext(), HomeActivity.class);
+                    intent.putExtra("username", username);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    cnt.startActivity(intent);
+                }
+                else{
+                    Toast.makeText(cnt,"used username ",Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+
+        requestQueue.add(jsonObjectRequest);
+        return ;
 
     }
 

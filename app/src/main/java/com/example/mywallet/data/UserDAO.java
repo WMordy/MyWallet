@@ -31,6 +31,7 @@ public class UserDAO {
     public boolean CreateUserDAO(String username , String password){
         try{
             String HashedPassword = crpt.encrypt(password);
+            apiCall.CreateAccount(username,HashedPassword);
             return true ;
         }
         catch(Exception e){

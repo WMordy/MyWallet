@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.mywallet.R;
+import com.example.mywallet.data.APICall;
 import com.example.mywallet.model.User;
 
 public class MainActivity extends AppCompatActivity {
@@ -63,28 +64,23 @@ public class MainActivity extends AppCompatActivity {
         }
         else{
             User user = new User(usernameValue,passwordValue,this);
-            if(user.isUserExist()){   // THIS IS JUST FOR TEST CHANGE IT !!!!!!
-                Toast.makeText(MainActivity.this,"username :" +user.getUSERNAME() + "already used",Toast.LENGTH_SHORT).show();
-                clearCredintials();
-                Log.i("SignUP","you are logged in successfully");
-            }
-            else{
+
               try{
                   user.CreateUser();
-                  user.Login();
-                  Log.i("Login","you are logged in successfully");
-                  Intent intent = new Intent(getBaseContext(), HomeActivity.class);
-                  intent.putExtra("username", usernameValue);
-                  startActivity(intent);
+                  clearCredintials();
+                  Log.i("SignUP","you are logged in successfully");
+
 
               }
               catch (Exception e){
+                  Toast.makeText(MainActivity.this,"username :" +user.getUSERNAME() + "already used",Toast.LENGTH_SHORT).show();
+                  clearCredintials();
                   e.printStackTrace();
               }
             }
         }
 
-    }
+
     public void clearCredintials(){
         username.setText("");
         password.setText("");

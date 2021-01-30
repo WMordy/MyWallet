@@ -23,6 +23,7 @@ public class User {
         return USERNAME;
     }
 
+
     protected String getPASSWORD() {
         return PASSWORD;
     }
@@ -44,7 +45,7 @@ public class User {
         return login ;
     }
     public boolean CreateUser()   {
-        boolean login = usrDao.LoginDAO(this.USERNAME,this.PASSWORD);
+        boolean login = usrDao.CreateUserDAO(this.USERNAME,this.PASSWORD);
         return login ;
     }
     public boolean isUserExist(){
